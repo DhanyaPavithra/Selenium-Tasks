@@ -15,14 +15,15 @@ class DragAndDrop:
         """
         self.url = url
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-        self.action = ActionChains(self.driver) # Action chain object for performing action chains
+        # Action chain object for performing action chains
+        self.action = ActionChains(self.driver)
 
     def boot(self):
         """
         boot function to boot the webpage
 
         """
-        self.driver.get(self.url) # to open the webpage
+        self.driver.get(self.url)
         self.driver.maximize_window()
         self.wait(5)
 
@@ -42,14 +43,19 @@ class DragAndDrop:
     def findElementByXPATH(self,value):
         return self.driver.find_element(by=By.XPATH, value=value)
 
+    def switchFrame(self, value):
+        """
+        To switch to the frame in HTML
+
+        """
+        self.driver.switch_to.frame(self.driver.find_element(by=By.CSS_SELECTOR, value=value))
+
     def dragAndDropFunction(self):
         """
         Method to perform Drag and drop actions
 
         """
         try:
-            self.boot()
-            self.wait(5)
             # To locate the source element
             source = self.findElementsById("draggable")
             # To locate the destination element
@@ -73,4 +79,6 @@ class DragAndDrop:
 
 url = "https://jqueryui.com/droppable/#default"
 obj = DragAndDrop(url)
+obj.boot()
+obj.switchFrame("iframe")
 obj.dragAndDropFunction()
